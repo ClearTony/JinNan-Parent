@@ -191,11 +191,11 @@ public class DataBoardServiceImpl implements DataBoardService {
         Map<String, Object> objectWeekMap  = (Map<String, Object>)resultWeekData.get("1502586_11_0_0");
         List<Map<String, Object>> resultWeekList = (List<Map<String, Object>>) objectWeekMap.get("p83022");
         for (Map<String, Object> stringObjectMap : resultWeekList) {
-            weekXAxis.add(stringObjectMap.get("time_stamp").toString());
+            weekXAxis.add(DateUtil.format(DateUtil.parse(stringObjectMap.get("time_stamp").toString(),  "yyyyMMdd"),  "YYYY-MM-dd"));
             BigDecimal value = new BigDecimal(stringObjectMap.get("2").toString()).divide(new BigDecimal("1000"),1,BigDecimal.ROUND_HALF_UP);
             weekYAxis.add(value);
         }
-        weekXAxis.add(nowWeekDateStr);
+        weekXAxis.add(DateUtil.format(DateUtil.parse(nowWeekDateStr,  "yyyyMMdd"),  "YYYY-MM-dd"));
         weekYAxis.add(dayValue);
         barChart.setWeekXAxis(weekXAxis);
         barChart.setWeekYAxis(weekYAxis);
@@ -215,11 +215,11 @@ public class DataBoardServiceImpl implements DataBoardService {
         Map<String, Object> resultMonthData = (Map<String, Object>) resultDataMonth.get("1502586_11_0_0");
         List<Map<String, Object>> resultMonthList = (List<Map<String, Object>>) resultMonthData.get("p83022");
         for (Map<String, Object> stringObjectMap : resultMonthList) {
-            monthXAxis.add(stringObjectMap.get("time_stamp").toString());
+            monthXAxis.add(DateUtil.format(DateUtil.parse(stringObjectMap.get("time_stamp").toString(),  "yyyyMMdd"),  "YYYY-MM-dd"));
             BigDecimal value = new BigDecimal(stringObjectMap.get("2").toString()).divide(new BigDecimal("1000"),1,BigDecimal.ROUND_HALF_UP);
             monthYAxis.add(value);
         }
-        monthXAxis.add(nowWeekDateStr);
+        monthXAxis.add(DateUtil.format(DateUtil.parse(nowWeekDateStr,  "yyyyMMdd"),  "YYYY-MM-dd"));
         monthYAxis.add(dayValue);
         barChart.setMonthXAxis(monthXAxis);
         barChart.setMonthYAxis(monthYAxis);
@@ -241,7 +241,7 @@ public class DataBoardServiceImpl implements DataBoardService {
         Map<String, Object> objectYearMap  = (Map<String, Object>)resultDataYear.get("1502586_11_0_0");
         List<Map<String, Object>> resultYearList = (List<Map<String, Object>>) objectYearMap.get("p83022");
         for (Map<String, Object> stringObjectMap : resultYearList) {
-            yearXAxis.add(stringObjectMap.get("time_stamp").toString());
+            yearXAxis.add(DateUtil.format(DateUtil.parse(stringObjectMap.get("time_stamp").toString(),  "yyyyMM"),  "YYYY-MM"));
             BigDecimal value = new BigDecimal(stringObjectMap.get("4").toString()).divide(new BigDecimal("10000000"),1,BigDecimal.ROUND_HALF_UP);
             if (stringObjectMap.get("time_stamp").toString().equals(nowDayOfYearStr)){
                 BigDecimal bigDecimal = new BigDecimal(stringObjectMap.get("4").toString()).add(new BigDecimal(dayValueStr));

@@ -38,6 +38,18 @@ public class DataBoardServiceImpl implements DataBoardService {
         paramsMonth.put("data_type", "4");
         paramsMonth.put("order", 0);
         Map<String, Object> monthYearDataMap = sunshineCloudService.getDevicePointsDayMonthYearDataList(paramsMonth);
+
+        Map<String,Object> dayParams = new HashMap<>();
+        dayParams.put("point_id_list", List.of("83022"));
+        dayParams.put("device_type", "11");
+        dayParams.put("ps_key_list",List.of("1502586_11_0_0"));
+        Map<String, Object> deviceRealTimeData = sunshineCloudService.getDeviceRealTimeData(dayParams);
+        Map<String, Object> deviceResultData = (Map<String, Object>) deviceRealTimeData.get("result_data");
+        List<Map<String, Object>> devicePointList= (List<Map<String, Object>>) deviceResultData.get("device_point_list");
+        Map<String, Object> map = devicePointList.get(0);
+        Map<String, Object> devicePointMap = (Map<String, Object>) map.get("device_point");
+        String dayValueStr = (String) devicePointMap.get("p83022");
+
         if (stringObjectMap != null){
             Map<String,Object> resultData = (Map<String, Object>) stringObjectMap.get("result_data");
             List<Map<String,Object>> list = (List<Map<String, Object>>) resultData.get("pageList");
@@ -78,9 +90,9 @@ public class DataBoardServiceImpl implements DataBoardService {
             Map<String,Object> dataMap = (Map<String, Object>) resultData.get("1502586_11_0_0");
             List<Map<String,Object>> list  = (List<Map<String, Object>>) dataMap.get("p83022");
             Map<String, Object> objectMap = list.get(0);
-            String value  = objectMap.get("4").toString();
-            BigDecimal monthTotal = new BigDecimal(value);
-            powerStationDetail.setMonthEnergyValue( monthTotal.divide(new BigDecimal("10000"), 2, BigDecimal.ROUND_HALF_UP));
+            BigDecimal bigDecimal = new BigDecimal(objectMap.get("4").toString()).add(new BigDecimal(dayValueStr));
+            BigDecimal monthTotal = bigDecimal.divide(new BigDecimal("10000000"),1,BigDecimal.ROUND_HALF_UP);
+            powerStationDetail.setMonthEnergyValue(monthTotal);
             powerStationDetail.setMonthEnergyUnit("万度");
         }
         return powerStationDetail;

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.assetsmanage.mapper.AssetsMapper">
+
+    <sql id="Base_Column_List">
+        id,name,category,no,img,model,num,date,money,depreciate,department_id,staff_id,location,status,comment
+    </sql>
+
+    <select id="selectAll" resultType="com.assetsmanage.dto.AssetsDto">
+         select
+         assets .*
+         from assets
+        <where>
+            <if test="name != null"> and assets .name like concat('%', #{name}, '%')</if>
+            <if test="category != null"> and assets .category like concat('%', #{category}, '%')</if>
+            <if test="no != null"> and assets .no like concat('%', #{no}, '%')</if>
+            <if test="operator != null"> and assets .operator= #{operator}</if>
+        </where>
+        order by assets .id desc
+    </select>
+
+    <select id="selectById" resultType="com.assetsmanage.entity.Assets">
+        select
+        <include refid="Base_Column_List" />
+        from assets 
+        where id = #{id}
+    </select>
+    <select id="selectExportData" resultType="com.assetsmanage.dto.AssetsExportDto">
+        select
+        assets .*
+        from assets
+        <where>
+            <if test="name != null"> and assets .name like concat('%', #{name}, '%')</if>
+            <if test="category != null"> and assets .category like concat('%', #{category}, '%')</if>
+            <if test="no != null"> and assets .no like concat('%', #{no}, '%')</if>
+            <if test="operator != null"> and assets .operator= #{operator}</if>
+        </where>
+        order by assets .id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from assets 
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.assetsmanage.entity.Assets" useGeneratedKeys="true" keyProperty="id">
+        insert into assets 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="category != null">category,</if>
+            <if test="secondCategory != null">second_category,</if>
+            <if test="no != null">no,</if>
+            <if test="img != null">img,</if>
+            <if test="model != null">model,</if>
+            <if test="num != null">num,</if>
+            <if test="date != null">date,</if>
+            <if test="money != null">money,</if>
+            <if test="depreciate != null">depreciate,</if>
+            <if test="departmentId != null">department_id,</if>
+            <if test="staffId != null">staff_id,</if>
+            <if test="location != null">location,</if>
+            <if test="status != null">status,</if>
+            <if test="comment != null">comment,</if>
+            <if test="operator != null">operator,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="category != null">#{category},</if>
+            <if test="secondCategory != null">#{secondCategory},</if>
+            <if test="no != null">#{no},</if>
+            <if test="img != null">#{img},</if>
+            <if test="model != null">#{model},</if>
+            <if test="num != null">#{num},</if>
+            <if test="date != null">#{date},</if>
+            <if test="money != null">#{money},</if>
+            <if test="depreciate != null">#{depreciate},</if>
+            <if test="departmentId != null">#{departmentId},</if>
+            <if test="staffId != null">#{staffId},</if>
+            <if test="location != null">#{location},</if>
+            <if test="status != null">#{status},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="operator != null">#{operator},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.assetsmanage.entity.Assets">
+        update assets 
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="secondCategory != null">
+                second_category = #{secondCategory},
+            </if>
+            <if test="no != null">
+                no = #{no},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="model != null">
+                model = #{model},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="date != null">
+                date = #{date},
+            </if>
+            <if test="money != null">
+                money = #{money},
+            </if>
+            <if test="depreciate != null">
+                depreciate = #{depreciate},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId},
+            </if>
+            <if test="staffId != null">
+                staff_id = #{staffId},
+            </if>
+            <if test="staffName != null">
+                staff_name = #{staffName},
+            </if>
+            <if test="location != null">
+                location = #{location},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="comment != null">
+                comment = #{comment},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

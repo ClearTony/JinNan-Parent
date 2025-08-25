@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.assetsmanage.mapper.DepartmentMapper">
+
+    <sql id="Base_Column_List">
+        id,name,address,pid,level
+    </sql>
+
+    <select id="selectAll" resultType="com.assetsmanage.entity.Department">
+        select
+        <include refid="Base_Column_List" />
+        from department
+        <where>
+            <if test="id != null"> and id = #{id}</if>
+            <if test="name != null"> and name like concat('%', #{name}, '%')</if>
+            <if test="address != null"> and address like concat('%', #{address}, '%')</if>
+            <if test="pid != null"> and pid = #{pid}</if>
+            <if test="level != null"> and level = #{level}</if>
+        </where>
+        order by id asc
+    </select>
+
+    <select id="selectById" resultType="com.assetsmanage.entity.Department">
+        select
+        <include refid="Base_Column_List" />
+        from department
+        where id = #{id}
+    </select>
+    <select id="selectByName" resultType="java.lang.Integer">
+        select id from department where name in
+        <foreach item="departmentName" collection="departmentNameList" separator="," open="(" close=")">
+            #{departmentName}
+        </foreach>
+    </select>
+    <select id="selectByIdList" resultType="java.lang.String">
+        select name from department where id in
+        <foreach item="id" collection="departmentId" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <delete id="deleteById">
+        delete from department
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.assetsmanage.entity.Department" useGeneratedKeys="true" keyProperty="id">
+        insert into department
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="address != null">address,</if>
+            <if test="pid != null">pid,</if>
+            <if test="level != null">level,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="address != null">#{address},</if>
+            <if test="pid != null">#{pid},</if>
+            <if test="level != null">#{level},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.assetsmanage.entity.Department">
+        update department
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="pid != null">
+                pid = #{pid},
+            </if>
+            <if test="level != null">
+                level = #{level},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
